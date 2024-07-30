@@ -1,0 +1,22 @@
+package com.oracle.oBootHello.controller;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import com.oracle.oBootHello.service.MemberService;
+
+@Controller
+public class MemberController {
+	private static final Logger logger = LoggerFactory.getLogger(MemberController.class); 
+	
+	MemberService memberService = new MemberService();
+	
+	@GetMapping(value ="members/memberForm")
+	public String memberForm() {
+		System.out.println("MemberController/members/memberForm start...");
+		return "members/memberForm";
+	}
+	
+}

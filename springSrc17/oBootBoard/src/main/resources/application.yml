@@ -1,0 +1,15 @@
+server: 
+  port: 8383
+spring:
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:@localhost:1521/xe
+    username: scott
+    password: tiger
+    
+    # View Resolver
+    # tab을 해서 썼다는 건 spring의 하위에 있다는 뜻
+  mvc:
+   view:
+    prefix: /WEB-INF/views/
+    suffix: .jsp

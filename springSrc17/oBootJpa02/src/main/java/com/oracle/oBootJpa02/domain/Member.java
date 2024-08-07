@@ -45,7 +45,12 @@ public class Member {
 	@ManyToOne
 	@JoinColumn(name = "team_id")
 	private Team team;
+	
+	// 실제 Column 은 아니지만 buffer
 	@Transient
 	private String teamname;
+	@Transient
+	private Long teamid;
+	
 	
 }

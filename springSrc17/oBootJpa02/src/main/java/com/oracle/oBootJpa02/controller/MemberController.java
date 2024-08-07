@@ -68,4 +68,25 @@ public class MemberController {
 		System.out.println("MemberController memberUpdate memberService.updateByMember After...");
 		return "redirect:/members";
 	}
+	
+	@GetMapping(value = "/members/search")
+	public String search(Member member, Model model) {
+		List<Member> memberList = memberService.getListSearchMember(member.getName());
+		System.out.println("MemberController/members/search memberList.size()->" + memberList.size());
+		model.addAttribute("memberList",memberList);
+		return "members/memberList";
+	}
+	
+	@GetMapping(value = "findByListMembers")
+	public String findByListMembers(Member member, Model model) {
+		// List<Member> listMember  = memberRepository.findByMembers(member.getId(),member.getSal());
+	    // 검색조건으로 입력한 id 큰거 , sal 큰거
+		List<Member> memberList = memberService.getListFindByMembers(member);
+		System.out.println("memberList.get(0).getName()->"+memberList.get(0).getName());
+		System.out.println("memberList.get(0).getTeam().getName()->"+memberList.get(0).getTeam().getName());
+		model.addAttribute("memberList",memberList);
+		return "members/memberList";
+	}
+	
+	
 }

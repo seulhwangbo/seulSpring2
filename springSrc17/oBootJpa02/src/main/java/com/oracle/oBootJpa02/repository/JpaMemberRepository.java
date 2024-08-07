@@ -47,9 +47,53 @@ public class JpaMemberRepository implements MemberRepository {
 	}
 
 	@Override
-	public void updateByMember(Member member) {
-		// TODO Auto-generated method stub
+	public int updateByMember(Member member) {
+		int result = 0;
+		System.out.println("JpaMemberRepository updateByMember1 member -> " +member);
+		Member member3 = em.find(Member.class, member.getId());
 		
+		//존재하면 수정
+		if (member3 != null ) {
+			System.out.println("JpaMemberRepository updateMember member.getTeamId() => " + member.getTeamid());
+			Team team = em.find(Team.class, member.getTeamid());
+				if(team != null) {
+					team.setName(member.getTeamname());
+					em.persist(team);
+				}
+				//회원 저장
+				member3.setTeam(team);
+				member3.setName(member.getName());
+				em.persist(member3);
+				result = 1;
+				System.out.println("JpaMemberRepository updateByMember2 member-> " +member);
+		}  else {
+			result = 0;
+			System.out.println("JapMemberRepository updateByMember No Exist...");
+		}
+		
+		return result;
+	}
+
+	@Override
+	public List<Member> findByName(String name) {
+		System.out.println("JpaMemberRepository findByName name-->" + name);
+		String pname = name + '%';
+		List<Member> member1 = em.createQuery("select m from Member m where name like :name",Member.class )
+							   .setParameter("name", pname)
+							   .getResultList();
+		System.out.println("JpaMemberRepository findByName after");
+		return member1;
+	}
+
+	@Override
+	public List<Member> findByMembers(Long id, Long sal) {
+	    // 검색조건으로 입력한 id 큰거 , sal 큰거
+		System.out.println("JpaMemberRepository findByMembers id--> "+id + " sal " + sal);
+		List<Member> member1 = em.createQuery("Select m from Member m where sal>:sal AND id>:id",Member.class)
+								 .setParameter("sal", sal)
+								 .setParameter("id", id)
+								 .getResultList();
+		return member1;
 	}
 
 }

@@ -45,4 +45,15 @@ public class MemberService {
 		return;
 		
 	}
+
+	public List<Member> getListSearchMember(String name) {
+		System.out.println("memberService getListMember" + name);
+		List<Member> member1 = memberRepository.findByName(name);
+		return member1;
+	}
+
+	public List<Member> getListFindByMembers(Member member) {
+		List<Member> listMember  = memberRepository.findByMembers(member.getId(),member.getSal());
+		return listMember;
+	}
 }

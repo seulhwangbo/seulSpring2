@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oracle.oBootMyBatis01.EmpMapper">
+                     <!-- return 값이 2개 이상이면 DTO를 써야한다. -->
+   <select id="empTotal" resultType="int">
+      SELECT COUNT(*) FROM emp
+   </select>
+   
+   <!-- list mapping -->
+   <select id="tkEmpListAll" parameterType="Emp" resultType="Emp">
+	<![CDATA[
+      SELECT * 
+      FROM (
+            SELECT ROWNUM rn, a.* 
+            FROM (
+                  SELECT * FROM emp ORDER BY empno
+                 ) a
+          )
+      WHERE rn >= #{start} 
+      AND   rn <= #{end}
+ 		]]>  
+          <!-- 크같다 혹은 작같다고 표현 -->
+          <!-- sql문 자체는 between 과 같은 의미를 표현하고 있다 -->
+ </select>
+   <select id="tkEmpListAll3" parameterType="Emp" resultType="Emp">
+  <!--  <select id="tkEmpListAll" parameterType="com.oracle.oBootMybatis01.model" resultType="com.oracle.oBootMybatis01.model"> -->
+      SELECT * 
+      FROM (
+            SELECT ROWNUM rn, a.* 
+            FROM (
+                  SELECT * FROM emp ORDER BY empno
+                 ) a
+          )
+      WHERE rn BETWEEN #{start} AND #{end}
+   </select>
+   
+   <!-- detail Emp -->
+   <select id="tkEmpSelOne" parameterType="int" resultType="Emp">
+      SELECT *
+      FROM emp
+      WHERE empno=#{empno}
+      <!-- 받고자 하는 필드명, 파라메터타입은 여러개를 적을 수 없으니 단일 컬럼일 때만 int와 같은 타입을 적을 수 있게 된다 -->
+   </select>
+   
+   <update id="tkEmpUpdate" parameterType="Emp">
+   		 UPDATE emp SET ename=#{ename}
+		              , job=#{job}
+		              , mgr=#{mgr}
+		              , sal=#{sal}
+		              , hiredate=#{hiredate}
+		              <if test="#{comm}!=null"> 	, comm=#{comm}    </if>
+		              , deptno=#{deptno} 
+		 WHERE  empno=#{empno}				  
+   </update>
+   <select id="tkSelectManager" resultType="Emp" >
+   	SELECT * 
+   	FROM emp
+   	WHERE empno in (SELECT mgr FROM emp)
+   </select>
+   
+   
+ 	<insert id="insertEmp" parameterType="Emp">
+		INSERT INTO emp
+		VALUES(#{empno}, #{ename}, #{job}, #{mgr}, 
+			   #{hiredate}, #{sal}, #{comm}, #{deptno})
+	</insert>
+	
+	<delete id="deleteEmp" parameterType="Emp">
+		DELETE 
+		FROM EMP
+		WHERE empno = #{empno}
+	</delete>
+	
+   <select id="condTotalEmp" parameterType="Emp" resultType="int">
+	   SELECT Count(*) FROM emp
+	   <choose>
+	   	<when test="search == 's_job'">
+	   		WHERE job like '%' || #{keyword} || '%'
+	   	</when>
+	    <when test="search == 's_ename'">
+			WHERE ename like '%' || #{keyword} || '%'	    
+	    </when>
+	    <otherwise>
+	    	WHERE job like '%'
+	    </otherwise>
+	   </choose>
+   </select>
+   <select id="tkEmpSearchList3" parameterType="Emp" resultType="Emp">
+   	 	SELECT * 
+   	 		FROM 
+   	 		( SELECT ROWNUM rn, a.* 
+            	FROM 
+            			(select *
+            			from emp
+				   	 	 <choose>
+				   	 	 	<when test="search == 's_job'">
+				   	 	 		WHERE job like '%' || #{keyword} || '%'
+				   	 	 	</when>
+				   	 	 	<when test="search == 's_ename'">
+					   	 	 	WHERE ename like '%' || #{keyword} ||'%'
+				   	 	 	</when>
+				   			<otherwise>
+				   				WHERE job like '%'
+				   			</otherwise>
+   	 	 				</choose>
+   	 	 				order by empno
+   	 	 				) a
+   	 )
+    WHERE rn BETWEEN #{start} AND #{end}
+   </select>
+ </mapper>

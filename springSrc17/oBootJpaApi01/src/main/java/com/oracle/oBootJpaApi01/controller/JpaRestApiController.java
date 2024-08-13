@@ -5,9 +5,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.oracle.oBootJpaApi01.domain.Member;
 import com.oracle.oBootJpaApi01.service.MemberService;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 // controller + responseBody
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +21,9 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
 // logger logger = loggerFactory.getLogger
@@ -91,4 +97,46 @@ public class JpaRestApiController {
 		private String name;
 		private Long   sal;
 	}
+	
+	@PostMapping("/restApi/v1/memberSave")
+	// @RequestBody : Json(member)으로 온것을  --> Member member Setting
+	public CreateMemberResponse saveMemberV1(@RequestBody @Valid Member member) {
+		System.out.println("JpaRestApiController/api/v1/memberSave member.member()=>" + member);
+		log.info("member.getName=>{}", member.getName());
+		log.info("member.getSal()=>{}", member.getSal());
+		
+		Long id = memberService.saveMember(member);
+		return new CreateMemberResponse(id);
+	}
+	 
+	
+	
+	@Data
+	static class CreateMemberRequest{
+		@NotEmpty
+		private String name;
+		private Long   sal;
+	}
+	@Data
+	@RequiredArgsConstructor
+	class CreateMemberResponse{
+		private final Long id;
+//		public CreateMemberResponse(Long id) {
+//			this.id = id;
+//		}
+	}
+
+
+@PostMapping("/restApi/v2/memberSave")
+// @RequestBody : Json(member)으로 온것을  --> Member member Setting
+public CreateMemberResponse saveMemberV2(@RequestBody @Valid CreateMemberRequest cMember) {
+	System.out.println("JpaRestApiController/api/v2/memberSave member.member()=>" + cMember);
+	log.info("member.getName=>{}", cMember.getName());
+	log.info("member.getSal()=>{}", cMember.getSal());
+	Member member = new Member();
+	member.setName(cMember.getName());
+	member.setSal(cMember.getSal());
+	Long id = memberService.saveMember(member);
+	return new CreateMemberResponse(id);
+}
 }

@@ -1,0 +1,39 @@
+server:
+  port: 8387
+# Oracle Connect
+spring:
+  datasource:
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@localhost:1521/xe
+    username: scott
+    password: tiger
+    
+  #Jpa Setting
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+            # @Entity라고 설정되어 있는 것들 만 update, none, create 등등
+            # release 할 때에는 none으로 바꿔주어야 한다!!!!
+            
+  #View Resolver
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+# mail setting
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: lia47o@hanyang.ac.kr
+    password: sbiw mqlw ukex mvky
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls.enable: true
+# Mybatis
+mybatis:
+  config-location: classpath:configuration.xml
+  mapper-locations: classpath:mappers/*.xml
+  # classpath -> resource이다!!

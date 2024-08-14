@@ -17,6 +17,7 @@ import com.oracle.oBootMybatis01.model.Dept;
 import com.oracle.oBootMybatis01.model.DeptVO;
 import com.oracle.oBootMybatis01.model.Emp;
 import com.oracle.oBootMybatis01.model.EmpDept;
+import com.oracle.oBootMybatis01.model.Member1;
 import com.oracle.oBootMybatis01.service.EmpService;
 import com.oracle.oBootMybatis01.service.Paging;
 
@@ -338,4 +339,53 @@ public class EmpController {
 		  
 		  return "writeDeptCursor";
 	  }
+	  
+	//interCeptor 시작 화면
+	   @RequestMapping(value = "interCeptorForm")
+	   public String interCeptorForm() {
+	      System.out.println("EmpController interCeptorForm start...");
+	      return "interCeptorForm";
+	   }
+	   
+	   // 2. interCeptor Number2
+	   @RequestMapping(value = "interCeptor")
+	   public String interCeptor(Member1 member1, Model model) {
+	      System.out.println("EmpController interCeptor Test Start");
+	      System.out.println("EmpController interCeptor id-> "+member1.getId());
+	      // 존재 : 1, 비존재 : 0
+	      int memCnt = es.memCount(member1.getId());
+	      
+	      System.out.println("EmpController interCeptor memCnt -> "+memCnt);
+	      
+	      model.addAttribute("id", member1.getId());
+	      model.addAttribute("memCnt", memCnt);
+	      System.out.println("EmpController interCeptor Test End");
+	      
+	      return "interCeptor";   //User 존재하면 User 이용 조회 Page
+	   }
+	   
+	   //SampleInterCeptor 내용을 받아 처리
+	   @RequestMapping(value = "doMemberWrite")
+	   public String doMemberWrite(Model model, HttpServletRequest request) {
+	      String ID = (String) request.getSession().getAttribute("ID");
+	      System.out.println("doMemberWrite 부터 하세요");
+	      model.addAttribute("id", ID);
+	      return "doMemberWrite";
+	   }
+	   
+	   //interCeptor 진행 Test
+	   @RequestMapping(value = "doMemberList")
+	   public String doMemberList(Model model, HttpServletRequest request) {
+	      String ID = (String) request.getSession().getAttribute("ID");
+	      System.out.println("doMemberList Test Start ID -> "+ID);
+	      Member1 member1 = null;
+	      // Member1 List Get Service
+	      // Service, DAO --> listMem
+	      // Mapper --> listMember1
+	      // Member1 모든 Row Get
+	      List<Member1> listMem = es.listMem(member1);
+	      model.addAttribute("ID", ID);
+	      model.addAttribute("listMem", listMem);
+	      return "doMemberList";
+	   }
 }

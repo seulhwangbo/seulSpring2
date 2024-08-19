@@ -2,6 +2,7 @@ package com.oracle.oBootMybatis01.controller;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -27,6 +28,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -387,5 +389,50 @@ public class EmpController {
 	      model.addAttribute("ID", ID);
 	      model.addAttribute("listMem", listMem);
 	      return "doMemberList";
+	   }
+	   
+	   @RequestMapping(value = "ajaxForm")
+	   public String ajaxForm(Model model) {
+		   System.out.println("ajaxForm Start...");
+		   return "ajaxForm";
+	   }
+	   
+	   // controller만 가지고 있기 때문에 responseBody를 가지고 와서 httpMessageConverter로 넘어간다
+	   @ResponseBody
+	   @RequestMapping(value = "getDeptName")
+	   public String getDeptName (Dept dept,Model model) { 
+		   System.out.println("EmpController deptno" + dept.getDeptno());
+		   String deptName = es.deptName(dept.getDeptno());
+		   System.out.println("EmpController deptName => " + deptName);
+		   return deptName;
+	   }
+	   
+	   //ajax list Test
+	   @RequestMapping(value = "listEmpAjaxForm")
+	   public String listEmpAjaxForm(Model model) {
+		   Emp emp = new Emp();
+		   System.out.println("Ajax List Test Start...");
+		   emp.setStart(1);
+		   emp.setEnd(10);
+		   
+		   List<Emp> listEmp = es.listEmp(emp);
+		   System.out.println("EmpController listEmpAjax listEmp.size()->" + listEmp.size());
+		   model.addAttribute("listEmp",listEmp);
+		   model.addAttribute("result","kkk");
+		   return "listEmpAjaxForm";
+	   }
+	   
+	   @ResponseBody
+	   @RequestMapping(value = "empSerializeWrite")
+//	   public Map<String, Object> empSerializeWrite(@Valid Emp emp){
+	   public Map<String, Object> empSerializeWrite(@RequestBody @Valid Emp emp){
+		   System.out.println("EmpController empSerializeWrite Start...");
+		   System.out.println("EmpController empSerializeWrite emp ... " + emp);
+		   int writeResult = 1;
+		   
+		   Map<String, Object> resultMap = new HashMap<>();
+		   System.out.println("EmpController empSerializeWrite writeResult => " +writeResult);
+		   resultMap.put("writeResult", writeResult);
+		   return resultMap;
 	   }
 }

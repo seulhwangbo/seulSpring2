@@ -145,4 +145,9 @@ public class EmpServiceImpl implements EmpService {
 	      System.out.println("EmpServiceImpl listMem.size() -->"+listMem.size());
 	      return listMem;
 	   }
+
+	@Override
+	public String deptName(int deptno) {
+		return ed.deptName(deptno);
+	}
 }

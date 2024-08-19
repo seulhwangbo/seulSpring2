@@ -156,4 +156,18 @@ public List<EmpDept> listEmpDept() {
 	return empDept;
 }
 
+@Override
+public String deptName(int deptno) {
+	System.out.println("EmpDaoImpl deptName start...");
+	String str = "";
+	try {
+		System.out.println("EmpDaoImpl deptName deptno => " + deptno);
+		str = session.selectOne("tkDeptName",deptno);
+		System.out.println("EmpDaoImpl deptName str => " + str);
+	} catch (Exception e) {
+		System.out.println("EmpDaoImpl deptName Exception" + e.getMessage());
+	}
+	return str;
+}
+
 }

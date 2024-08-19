@@ -21,4 +21,7 @@
 		where e.deptno = d.deptno
 		order by empno
 	</select>
+	<select id="tkDeptName" parameterType="int" resultType="java.lang.String">
+		SELECT dname FROM dept WHERE deptno = #{deptno}
+	</select>
 </mapper>

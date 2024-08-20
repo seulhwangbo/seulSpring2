@@ -12,4 +12,18 @@
 		SELECT * 
 		FROM member1
 	</select>
+	<insert id="insertMember3" parameterType="Member1">
+		Insert into Member1(id, password, name) values ( #{id}, 
+														 #{password},
+														 #{name}
+														)
+	
+	</insert>
+	<insert id="insertMember1" parameterType="Member1">
+		Insert into Member1(id, password, name) values ( #{id}, 
+														 #{password},
+														 #{name, jdbcType=VARCHAR}
+														)
+	
+	</insert>
 </mapper>

@@ -72,8 +72,7 @@
 		if(sendData2){
 			jQuery.each(sendData2, function(){
 				obj[this.name] = this.value;
-				alert('this.name->' + this.name);
-				alert('this.value->' + this.value);
+				alert('this.name->' + this.name + 'this.value->' + this.value);
 			});
 		}
 			return obj;

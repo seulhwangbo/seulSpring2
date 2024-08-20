@@ -1,8 +1,9 @@
 @CHARSET "UTF-8";
-body {	font-family: 굴림체; text-align: center;	}
+body {	font-family: 굴림체; text-align: center; color: white;
+		background-color: black	}
 table { border: 1px solid pink; width: 100%; 
          }
-tr { height: 30px; background: yellow; }
+tr { height: 30px; background: fuchsia; }
 /* th {	background: #C9BFED;	} */
-th {	background: #b9b973;	}
-td {	background: #f9f3b3;	}
+th {	background: rgb(255, 132, 193);	}
+td {	background: rgb(207, 175, 205);	}

@@ -14,6 +14,6 @@
 	<a href="/getDeptName?deptno=10">getDeptName(Emp controller)</a><p>
 	<a href="/listEmpAjaxForm">listEmpAjaxForm(aJax JSP 연동)</a><p>
 	<a href="/listEmpAjaxForm2">listEmpAjaxForm2(aJax JSP 객체리스트 get)</a><p>
-	<a href="/liseEmpAjaxForm3">listEmpAjaxForm3(aJax List를 Controller로 전송)</a><p>
+	<a href="/listEmpAjaxForm3">listEmpAjaxForm3(aJax List를 Controller로 전송)</a><p>
 </body>
 </html>

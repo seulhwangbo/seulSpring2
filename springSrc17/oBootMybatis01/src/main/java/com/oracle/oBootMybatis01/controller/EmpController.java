@@ -435,4 +435,57 @@ public class EmpController {
 		   resultMap.put("writeResult", writeResult);
 		   return resultMap;
 	   }
+	   
+	   @RequestMapping(value = "listEmpAjaxForm2")
+	   	public String listEmpAjaxForm2(Model model) {
+		   System.out.println("listEmpAjaxForm2 Start...");
+		   Emp emp = new Emp();
+		   System.out.println("Ajax List Test Start...");
+		   emp.setStart(1);
+		   emp.setEnd(24);
+		   List<Emp> listEmp = es.listEmp(emp);
+		   model.addAttribute("listEmp",listEmp);
+		   return "listEmpAjaxForm2";
+	   }
+	   
+	   @RequestMapping(value = "listEmpAjaxForm3")
+	    public String listEmpAjaxForm3(Model model) {
+		   System.out.println("listEmpAjaxForm3 Start...");
+		   Emp emp = new Emp();
+		   System.out.println("Ajax List Test Start...");
+		   emp.setStart(1);
+		   emp.setEnd(24);
+		   List<Emp> listEmp = es.listEmp(emp);
+		   System.out.println("EmpController listEmpAjax3 listEmp.size()->" + listEmp.size());
+		   model.addAttribute("listEmp",listEmp);
+		   return "listEmpAjaxForm3";
+	   }
+	   
+	   @ResponseBody
+	   @RequestMapping(value = "empListUpdate")
+	   	public Map<String, Object> empListUpdate(@RequestBody @Valid List<Emp> listEmp) {
+		   System.out.println("EmpController empListUpdate Start...");
+		   int updateResult = 1;
+		   
+		   for (Emp emp : listEmp) {
+			   System.out.println("EmpController empListUpdate emp -> " + emp);
+			   // int writeResult = kkk.listUpdateEmp(emp);
+		   }
+		   Map<String, Object> resultMap = new HashMap<>();
+		   resultMap.put("updateResult", updateResult);
+		   return resultMap;
+	   }
+	   
+	   @ResponseBody
+	   @RequestMapping(value = "transactionInsertUpdate")
+	   public String transactionInsertUpdate(Emp emp, Model model) {
+		   System.out.println("EmpController transactionInsertUpdate Start...");
+		   	// memberInsert 성공과 실패
+		   int returnMember = es.transactionInsertUpdate();
+		   System.out.println("EmpController transactionInsertUpdate returnMember" + returnMember);
+		   String returnMemberString = String.valueOf(returnMember);
+		   
+		   return returnMemberString;
+	   }
+	
 }
